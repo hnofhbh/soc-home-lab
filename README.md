@@ -21,7 +21,7 @@ flowchart LR
         KALI["KALI-ATK<br/>Kali Linux<br/>10.10.10.66<br/>attacker"]
         W1["WIN10-01<br/>Windows 10 + Sysmon<br/>10.10.10.101"]
         W2["WIN10-02<br/>Windows 10 + Sysmon<br/>10.10.10.102"]
-        L1["LNX-01<br/>Ubuntu Server (SSH)<br/>10.10.10.110"]
+        L1["LNX-01<br/>Ubuntu (SSH)<br/>10.10.10.110"]
         WZ["WAZUH-SRV<br/>Wazuh all-in-one<br/>10.10.10.10"]
         SP["SPLUNK-SRV<br/>Splunk Enterprise<br/>10.10.10.20"]
     end
@@ -38,11 +38,11 @@ flowchart LR
 
 | Host | Role | OS | RAM |
 |---|---|---|---|
-| `WAZUH-SRV` | SIEM #1 (manager, indexer, dashboard) | Ubuntu 64-bit | 4 GB |
+| `WAZUH-SRV` | SIEM #1 (manager, indexer, dashboard) | Ubuntu Server 24.04 LTS, 50 GB disk | 4 GB |
 | `SPLUNK-SRV` | SIEM #2 (Splunk Enterprise, Free license) | Windows 10 | 4 GB |
-| `WIN10-01` | Monitored endpoint | Windows 10 + Sysmon | 2–3 GB |
-| `WIN10-02` | Monitored endpoint | Windows 10 + Sysmon | 2–3 GB |
-| `LNX-01` | Monitored endpoint (SSH target) | Ubuntu Server | 1 GB |
+| `WIN10-01` | Monitored endpoint | Windows 10 + Sysmon | 2 GB |
+| `WIN10-02` | Monitored endpoint | Windows 10 + Sysmon | 2 GB |
+| `LNX-01` | Monitored endpoint (SSH target) | Ubuntu Desktop | 2 GB |
 | `KALI-ATK` | Attack simulation | Kali Linux | 2 GB |
 
 The host has 16 GB of RAM, so the two SIEMs never run at the same time. The lab runs in two phases

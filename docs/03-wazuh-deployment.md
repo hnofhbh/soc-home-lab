@@ -2,7 +2,20 @@
 
 > Status: **Planned.** Will be updated with the actual steps, version numbers, and screenshots.
 
-## Server: `WAZUH-SRV` (Ubuntu, 10.10.10.10, 4 GB RAM)
+## Server: `WAZUH-SRV` (Ubuntu Server 24.04 LTS, 10.10.10.10, 4 GB RAM)
+
+### VM specification
+
+| Setting | Value |
+|---|---|
+| OS | Ubuntu Server 24.04 LTS (minimized install not used) |
+| vCPU / RAM | 2 / 4 GB |
+| Disk | 50 GB, single file |
+| NIC 1 | `VMnet2` host-only, static `10.10.10.10/24`, no gateway |
+| NIC 2 | NAT, DHCP, used only during installation, then disconnected |
+| Installer options | OpenSSH server enabled; no extra snaps |
+
+### Wazuh installation
 
 Install the all-in-one stack (manager, indexer, dashboard) with the official installer
 while the VM has temporary internet access:
