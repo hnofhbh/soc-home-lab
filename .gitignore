@@ -1,0 +1,39 @@
+# Raw logs and captures (can contain sensitive data and are large)
+*.evtx
+*.evt
+*.pcap
+*.pcapng
+*.log
+raw-logs/
+exports/
+
+# Virtual machine files
+*.vmdk
+*.vmx
+*.vmxf
+*.vmsd
+*.nvram
+*.vmem
+*.vmss
+*.ova
+*.ovf
+*.iso
+
+# Malware test samples: never commit, even benign ones
+samples/
+*.zip
+*.7z
+
+# Secrets and credentials
+.env
+*.pem
+*.key
+*.pfx
+*credentials*
+*password*
+
+# OS and editor files
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/

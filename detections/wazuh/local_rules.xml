@@ -1,0 +1,62 @@
+<!--
+  Custom Wazuh rules for the SOC home lab.
+  Deploy to: /var/ossec/etc/rules/local_rules.xml on WAZUH-SRV
+  Validate:  sudo /var/ossec/bin/wazuh-analysisd -t
+
+  Parent rule 61603 is the built-in Wazuh rule for Sysmon event 1 (process creation).
+  Confirm the parent rule ID against the ruleset shipped with your Wazuh version before deploying.
+
+  Status: DRAFT, to be validated against lab data.
+-->
+
+<group name="local,sysmon,powershell,">
+
+  <!-- Scenario 3: PowerShell started with an encoded command -->
+  <rule id="100100" level="10">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\(powershell|pwsh)\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\s-(e|ec|en|enc|enco|encodedcommand)\s</field>
+    <description>PowerShell launched with an encoded command on $(win.system.computer)</description>
+    <mitre>
+      <id>T1059.001</id>
+      <id>T1027</id>
+    </mitre>
+  </rule>
+
+  <!-- Scenario 3: PowerShell started hidden or with execution policy bypass -->
+  <rule id="100101" level="8">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\(powershell|pwsh)\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(-w(indowstyle)?\s+hidden|-executionpolicy\s+bypass|-ep\s+bypass)</field>
+    <description>PowerShell launched hidden or with execution policy bypass on $(win.system.computer)</description>
+    <mitre>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+</group>
+
+<group name="local,sysmon,malware,">
+
+  <!-- Scenario 4: Office application spawning a shell or script host -->
+  <rule id="100200" level="12">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)\\(winword|excel|powerpnt|outlook)\.exe$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\(cmd|powershell|pwsh|wscript|cscript|mshta|rundll32)\.exe$</field>
+    <description>Office application spawned $(win.eventdata.image) on $(win.system.computer)</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+
+  <!-- Scenario 4: Execution from a user-writable folder -->
+  <rule id="100201" level="8">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\(Users\\[^\\]+\\(AppData\\Local\\Temp|Downloads)|Users\\Public)\\</field>
+    <description>Process executed from a user-writable folder: $(win.eventdata.image)</description>
+    <mitre>
+      <id>T1204.002</id>
+    </mitre>
+  </rule>
+
+</group>
